@@ -22,7 +22,7 @@ const book = (sequelize, DataTypes) => {
       },
     },
     author: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     firstPubYear: {
@@ -31,7 +31,7 @@ const book = (sequelize, DataTypes) => {
     },
     pageNum: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     status: {
       type: DataTypes.ENUM,

@@ -51,10 +51,15 @@ const addBook = catchAsync(async (req, res, next) => {
   if (!data) {
     return next(new AppError("data not found", 400));
   }
+
   data = data.data;
-  // console.log(data);
+  console.log(data);
+  const authorUrl = "https://openlibrary.org" + data.authors[0].key + ".json";
+  const authorsReal = await axios.get(authorUrl);
+  const authorsname = authorsReal.data.name;
+
   const title = data.title;
-  const author = data.publishers;
+  const author = authorsname;
   const firstPubYear = data.publish_date;
   const pageNum = data.number_of_pages;
   const books = await Book.create({
