@@ -36,14 +36,16 @@ const readBook = catchAsync(async (req, res, next) => {
       where: { isnb: isnb },
     }
   );
+  if (!book) {
+    return new AppError("book not defiend", 400);
+  }
   const books = await Book.findOne({
     where: {
       isnb,
     },
   });
-  const bookss = books.dataValues;
 
-  resFunc(res, 200, bookss);
+  resFunc(res, 200, books);
 });
 
 const addBook = catchAsync(async (req, res, next) => {
