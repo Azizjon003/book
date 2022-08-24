@@ -1,3 +1,5 @@
 const Router = require("express").Router();
 const bookController = require("../controller/bookController");
-Router.get("/read");
+Router.get("/add/:isnb", bookController.addBook);
+
+module.exports = Router;

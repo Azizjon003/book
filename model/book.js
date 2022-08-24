@@ -22,11 +22,8 @@ const book = (sequelize, DataTypes) => {
       },
     },
     author: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
-      validate: {
-        min: 5,
-      },
     },
     firstPubYear: {
       type: DataTypes.DATE,
@@ -40,10 +37,6 @@ const book = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ["0", "1", "2"],
       defaultValue: "0",
-    },
-    language: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
   });
   return book;
