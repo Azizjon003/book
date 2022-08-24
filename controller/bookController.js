@@ -3,7 +3,7 @@ const catchAsync = require("../utility/catchAsync");
 const axios = require("axios");
 const db = require("../model/index");
 const Book = db.book;
-const getBooks = catchAsync(async (req, res, next) => {
+const getAllBooks = catchAsync(async (req, res, next) => {
   const books = await Book.findAll();
   if (!books) {
     return next(new AppError("No books found", 404));
@@ -16,14 +16,27 @@ const getBooks = catchAsync(async (req, res, next) => {
     },
   });
 });
-const getOneBook = catchAsync(async (req, res, next) => {
-  const book = await Book.findByPk(req.params.id);
-  if (!book) {
-    return next(new AppError("No book found with that id", 404));
+const readBook = catchAsync(async (req, res, next) => {
+  const { isnb, status } = req.body;
+
+  if (!isnb || !status) {
+    return next(new AppError("isnb and status not found", 400));
   }
+  const book = await Book.update(
+    { isnb, status },
+    {
+      where: { isnb: isnb },
+    }
+  );
+  const books = await Book.findOne({
+    where: {
+      isnb,
+    },
+  });
+  const bookss = books.dataValues;
   res.status(200).json({
     status: "success",
-    data: book,
+    data: books,
   });
 });
 
@@ -59,4 +72,6 @@ const addBook = catchAsync(async (req, res, next) => {
 });
 module.exports = {
   addBook,
+  readBook,
+  getAllBooks,
 };

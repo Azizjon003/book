@@ -23,12 +23,12 @@ const db = {};
 db.sequelize = sequelize;
 db.book = require("./book")(sequelize, DataTypes);
 
-db.sequelize
-  .sync({ alter: true, force: true })
-  .then(() => {
-    console.log(cli.green("database succesfuly"));
-  })
-  .catch((err) => {
-    console.log(cli.red("database error", err.message));
-  });
+// db.sequelize
+//   .sync({ alter: true, force: true })
+//   .then(() => {
+//     console.log(cli.green("database succesfuly"));
+//   })
+//   .catch((err) => {
+//     console.log(cli.red("database error", err.message));
+//   });
 module.exports = db;
