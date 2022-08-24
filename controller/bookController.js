@@ -3,18 +3,26 @@ const catchAsync = require("../utility/catchAsync");
 const axios = require("axios");
 const db = require("../model/index");
 const Book = db.book;
+const resFunc = (res, statusCode, data) => {
+  if (Array.isArray(data)) {
+    res.status(statusCode).json({
+      status: "success",
+      results: data.length,
+      data: data,
+    });
+  } else {
+    res.status(statusCode).json({
+      status: "success",
+      data: data,
+    });
+  }
+};
 const getAllBooks = catchAsync(async (req, res, next) => {
   const books = await Book.findAll();
   if (!books) {
     return next(new AppError("No books found", 404));
   }
-  res.status(200).json({
-    status: "success",
-    results: books.length,
-    data: {
-      books,
-    },
-  });
+  resFunc(res, 200, books);
 });
 const readBook = catchAsync(async (req, res, next) => {
   const { isnb, status } = req.body;
@@ -34,10 +42,8 @@ const readBook = catchAsync(async (req, res, next) => {
     },
   });
   const bookss = books.dataValues;
-  res.status(200).json({
-    status: "success",
-    data: books,
-  });
+
+  resFunc(res, 200, bookss);
 });
 
 const addBook = catchAsync(async (req, res, next) => {
@@ -69,12 +75,9 @@ const addBook = catchAsync(async (req, res, next) => {
     pageNum,
     isnb,
   });
-
-  res.status(200).json({
-    status: "succes",
-    data: books,
-  });
+  resFunc(res, 200, books);
 });
+
 module.exports = {
   addBook,
   readBook,
